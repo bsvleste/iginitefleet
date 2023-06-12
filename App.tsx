@@ -1,33 +1,35 @@
 import { StatusBar } from 'react-native';
-import {ThemeProvider}from 'styled-components'
+import { ThemeProvider } from 'styled-components'
 import { SignIn } from './src/screens/SignIn';
-import { useFonts,Roboto_400Regular,Roboto_700Bold } from '@expo-google-fonts/roboto';
+import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 import theme from './src/theme';
 import { Loading } from './src/components/Loading';
-import {AppProvider,UserProvider } from '@realm/react'
-import {REALM_APP_ID} from '@env'
+import { AppProvider, UserProvider } from '@realm/react'
+import { REALM_APP_ID } from '@env'
 import { Routes } from './src/routes';
-import {SafeAreaProvider} from 'react-native-safe-area-context'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { RealmProvider } from './src/libs/realm';
 export default function App() {
-  const [fontsLoaded]= useFonts({Roboto_400Regular,Roboto_700Bold})
-  if(!fontsLoaded){
-    return(
-      <Loading/>
+  const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })
+  if (!fontsLoaded) {
+    return (
+      <Loading />
     )
   }
   return (
-    
+
     <AppProvider id={REALM_APP_ID}>
-    <ThemeProvider theme={theme}>
-    <SafeAreaProvider>
-      <StatusBar barStyle={'light-content'} backgroundColor="transparent"translucent/>
-      <UserProvider fallback={SignIn}>
-        <Routes />
-      </UserProvider>
-    </SafeAreaProvider>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <SafeAreaProvider style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}>
+          <StatusBar barStyle={'light-content'} backgroundColor="transparent" translucent />
+          <UserProvider fallback={SignIn}>
+            <RealmProvider>
+              <Routes />
+            </RealmProvider>
+          </UserProvider>
+        </SafeAreaProvider>
+      </ThemeProvider>
     </AppProvider>
   );
 }
 
- 
