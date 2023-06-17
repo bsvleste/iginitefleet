@@ -48,8 +48,6 @@ export function Departure() {
       Alert.alert("Erro", "Não foi possivel registrar a saida do veiculo")
       console.log(error)
       setIsRegistering(false)
-    } finally {
-      setIsRegistering(false)
     }
   }
   return (
