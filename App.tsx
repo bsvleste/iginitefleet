@@ -28,7 +28,7 @@ export default function App() {
         <SafeAreaProvider style={{ flex: 1, backgroundColor: theme.COLORS.GRAY_800 }}>
           {
             !netInfo.isConnected &&
-            <TopMessage title='Voçê esta off-line' />
+            <TopMessage title='Voçê esta off-line' hasIcon />
           }
           <StatusBar barStyle={'light-content'} backgroundColor="transparent" translucent />
           <UserProvider fallback={SignIn}>

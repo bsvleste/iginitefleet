@@ -4,13 +4,17 @@ import * as S from './styles'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 type Props = {
   title: string,
+  hasIcon?: boolean
 }
-export function TopMessage({ title }: Props) {
+export function TopMessage({ title, hasIcon = false }: Props) {
   const insets = useSafeAreaInsets()
-  const paddingTop = insets.top + 5
+  const paddingTop = insets.top + 15
   return (
     <S.Container  >
-      <MaterialCommunityIcons name="wifi-off" size={32} color={theme.COLORS.BRAND_LIGHT} />
+      {
+        hasIcon &&
+        <MaterialCommunityIcons name="wifi-off" size={32} color={theme.COLORS.BRAND_LIGHT} />
+      }
       <S.Title>{title}</S.Title>
     </S.Container>
   );

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as S from './styles'
 import { Header } from '../../components/Header';
@@ -7,11 +8,13 @@ import { useObject, useRealm } from '../../libs/realm';
 import { Historic } from '../../libs/realm/schemas/Historic';
 import { BSON } from 'realm';
 import { Alert } from 'react-native';
+import { getLastAsyncTimestamp } from '../../libs/asyncStorage/syncStorage';
 
 type ArrivalRouteParamsProps = {
   id: string
 }
-export function Arrivel() {
+export function Arrival() {
+  const [dataNotSynced, setDataNotSynced] = useState(false)
   const route = useRoute()
   const { goBack } = useNavigation()
   const { id } = route.params as ArrivalRouteParamsProps
@@ -50,6 +53,9 @@ export function Arrivel() {
       Alert.alert("Error", "Não foi possivel registrar a chegada do veiculo.")
     }
   }
+  useEffect(() => {
+    getLastAsyncTimestamp().then(res => setDataNotSynced(historic!.updated_at.getTime() > res))
+  }, [])
   return (
     <S.Container>
       <Header title={title} />
@@ -66,6 +72,16 @@ export function Arrivel() {
           <ButtonIcon onPress={handleREmoveVehicleUsage} />
           <Button title="Registrar chegada" onPress={handleArrivalRegister} />
         </S.Footer>
+      }
+      {
+        dataNotSynced &&
+        <S.AsyncMessage>
+          Sincronização da
+          {
+            historic?.status === 'departure' ? 'partida' : 'chegada'
+          }
+          pendente
+        </S.AsyncMessage>
       }
     </S.Container>
   );
